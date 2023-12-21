@@ -1,0 +1,10 @@
+rejolut_league/rpl/model/Team.class
+rejolut_league/rpl/RplApplication.class
+rejolut_league/rpl/repo/UserRepo.class
+rejolut_league/rpl/repo/CategoryRepo.class
+rejolut_league/rpl/model/Category.class
+rejolut_league/rpl/controller/CategoryController.class
+rejolut_league/rpl/repo/TeamRepo.class
+rejolut_league/rpl/controller/UserController.class
+rejolut_league/rpl/controller/TeamController.class
+rejolut_league/rpl/model/User.class
