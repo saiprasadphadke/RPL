@@ -25,7 +25,7 @@ public class Category {
 
     private double base_price;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany
     private Set<User> players = new HashSet<>();
     
     private String type;    

@@ -1,13 +1,6 @@
 package rejolut_league.rpl.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -17,7 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "player_id")
     private int id;
 
     private String user_name;
@@ -34,5 +27,13 @@ public class User {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @OneToOne
+    private Auction auction;
+
     private String user_image_url;
+
+    @OneToMany
+    @JoinColumn(name = "bid_id")
+    private Bid[] bids;
+
 }

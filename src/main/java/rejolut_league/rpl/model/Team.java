@@ -35,8 +35,16 @@ public class Team {
 
     private String team_image_url;
     
-    @OneToMany(mappedBy = "team")
-    private Set<User> players = new HashSet<>();
+    private String team_login_id;
     
+    private String password;
+
+    private String team_symbol;
+
+    @OneToMany
+    private Set<User> players = new HashSet<>();
+
+    @OneToMany
+    private Set<Bid> bids = new HashSet<>();
 
 }
