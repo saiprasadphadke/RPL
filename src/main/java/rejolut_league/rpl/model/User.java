@@ -27,13 +27,10 @@ public class User {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @OneToOne
+    @OneToOne(mappedBy = "player_id")
+    @JoinColumn(name = "auction_id")
     private Auction auction;
 
-    private String user_image_url;
-
-    @OneToMany
-    @JoinColumn(name = "bid_id")
-    private Bid[] bids;
-
+    private String user_image_url; 
+    
 }

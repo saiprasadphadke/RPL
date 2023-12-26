@@ -19,4 +19,7 @@ public interface TeamRepo extends JpaRepository<Team, Integer> {
     @Query(value = "SELECT * FROM public.team WHERE team_login_id = ?1", nativeQuery = true)
     Optional<Team> getTeamByLoginId(String loginId);
 
+    @Query(value = "SELECT * FROM public.team WHERE team_id = ?1", nativeQuery = true)
+    Optional<Team> getTeamById(Integer teamId);
+
 }

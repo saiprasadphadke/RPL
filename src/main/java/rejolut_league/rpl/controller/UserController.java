@@ -41,7 +41,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUser(@PathVariable Integer id) {
-        Optional<User> response = repo.getUserById(id);
+        User response = repo.getUserById(id);
 
         return ResponseEntity.ok().body(response);
 

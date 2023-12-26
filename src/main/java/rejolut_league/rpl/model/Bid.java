@@ -12,21 +12,17 @@ public class Bid {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bid_id")
-    private Integer bidId;
+    private Integer bid_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id")
-    private Auction auction_id;
+    private Auction auction;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    private Team team_id;
+    private Team team;
 
     @Column(name = "bid_amount")
     private Double bidAmount;
-
-    @Column(name = "player_id")
-    private Integer playerId;
     
 }

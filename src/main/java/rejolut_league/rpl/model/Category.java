@@ -24,9 +24,6 @@ public class Category {
     private String name;
 
     private double base_price;
-
-    @OneToMany
-    private Set<User> players = new HashSet<>();
     
     private String type;    
 }

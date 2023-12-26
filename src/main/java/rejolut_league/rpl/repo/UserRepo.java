@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    @Query(value = "SELECT * FROM public.user WHERE user_id = :id", nativeQuery = true)
-    Optional<User> getUserById(Integer id);
+    @Query(value = "SELECT * FROM public.user WHERE player_id = ?1", nativeQuery = true)
+    User getUserById(Integer id);
 
 
 }

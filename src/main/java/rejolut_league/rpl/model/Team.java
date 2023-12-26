@@ -1,6 +1,7 @@
 package rejolut_league.rpl.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -40,11 +41,5 @@ public class Team {
     private String password;
 
     private String team_symbol;
-
-    @OneToMany
-    private Set<User> players = new HashSet<>();
-
-    @OneToMany
-    private Set<Bid> bids = new HashSet<>();
 
 }

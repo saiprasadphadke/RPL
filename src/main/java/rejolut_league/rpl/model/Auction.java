@@ -1,5 +1,7 @@
 package rejolut_league.rpl.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,8 +22,10 @@ public class Auction {
 
     private Double bid_amount;
 
-    @OneToMany
-    @JoinColumn(name = "bid_id")
-    private Bid[] bids;
+    // @JoinColumn(name = "bid_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "auction")
+    private List<Bid> bids;
+
+    private String status;
 
 }
