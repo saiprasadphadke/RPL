@@ -103,8 +103,8 @@ public class PlayerService {
         newPlayer.setCategory(category);
         Player response = userRepository.save(newPlayer);
         // Add Player back to the list of players in Category
-        // category.getPlayers().add(response);
-        // categoryRepository.save(category);
+        category.getPlayers().add(response);
+        categoryRepository.save(category);
         return response;
     }
 
