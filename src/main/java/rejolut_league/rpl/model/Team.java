@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 // import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,27 +20,45 @@ import lombok.Data;
 @Table(name = "Team", schema = "public")
 public class Team {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_id")
-    public int id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "team_id")
+    // public int id;
 
-    private String team_name;
+    // private String team_name;
 
-    private int win;
+    // private int win;
 
-    private int loss;
+    // private int loss;
 
-    private int draw;  
+    // private int draw;  
 
-    private int team_total_match;
+    // private int team_total_match;
 
-    private String team_image_url;
+    // private String team_image_url;
     
     private String team_login_id;
     
     private String password;
 
-    private String team_symbol;
+    // private String team_symbol;
+    @Id
+    @GeneratedValue
+    private int id;
+    
+    @Column
+    private String name;
+    
+    @Column 
+    private int totalMatches;
+    
+    @Column
+    private int matchesWon;
+    
+    @OneToMany(mappedBy="team")
+  private List<Player> players;
+
+  @OneToMany(mappedBy="team")
+  private List<Bid> bids;
 
 }
