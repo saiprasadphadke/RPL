@@ -71,8 +71,8 @@ public class AuctionController {
     // }
 
     // Create
-    @PostMapping
-    public Auction createAuction(@RequestBody Auction auction) {
+    @PostMapping("")
+    public Auction createAuction(@RequestBody AuctionService.startAuction auction) {
         return auctionService.createAuction(auction);
     }
 
@@ -82,7 +82,7 @@ public class AuctionController {
         return auctionService.getAuctionById(id);
     }
 
-    @GetMapping
+    @GetMapping("")
     public List<Auction> getAllAuctions() {
         return auctionService.getAllAuctions();
     }

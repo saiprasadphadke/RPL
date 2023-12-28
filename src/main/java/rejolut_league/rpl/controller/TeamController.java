@@ -77,8 +77,8 @@ public class TeamController {
     // }
 
     // Create
-    @PostMapping
-    public Team createTeam(@RequestBody Team team) {
+    @PostMapping("")
+    public Team createTeam(@RequestBody TeamService.TeamRegister team) {
         return teamService.createTeam(team);
     }
 
@@ -88,7 +88,7 @@ public class TeamController {
         return teamService.getTeamById(id);
     }
 
-    @GetMapping
+    @GetMapping("")
     public List<Team> getAllTeams() {
         return teamService.getAllTeams();
     }

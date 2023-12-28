@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PlayerRepo extends JpaRepository<Player, Integer> {
 
-    @Query(value = "SELECT * FROM public.user WHERE player_id = ?1", nativeQuery = true)
-    Player getUserById(Integer id);
+    @Query(value = "SELECT * FROM public.player WHERE id = ?1", nativeQuery = true)
+    Player getPlayerById(Integer id);
 
 }

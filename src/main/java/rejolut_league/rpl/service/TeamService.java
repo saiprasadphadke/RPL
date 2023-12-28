@@ -1,13 +1,15 @@
 package rejolut_league.rpl.service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import rejolut_league.rpl.Constants;
 import rejolut_league.rpl.model.Team;
 import rejolut_league.rpl.repo.TeamRepo;
 
@@ -15,14 +17,13 @@ import rejolut_league.rpl.repo.TeamRepo;
 public class TeamService {
 
     public static class TeamRegister {
-        public String team_name;
-        public String team_symbol;
-        public String team_login_id;
-        public String team_password;
+        public String name;
+        public String loginId;
+        public String password;
     }
 
     public static class LoginBody {
-        public String login_id;
+        public String loginId;
         public String password;
     }
 
@@ -65,8 +66,35 @@ public class TeamService {
     // }
 
     // Create
-    public Team createTeam(Team team) {
+    public Team createTeam(TeamRegister body) {
+        Team team = new Team();
+        String hashedPassword = BCrypt.hashpw(body.password, BCrypt.gensalt(10));
+
+        team.setName(body.name);
+        team.setMatchesWon(0);
+        team.setMatchesLost(0);
+        team.setMatchesDrawn(0);
+        team.setTotalMatches(0);
+        team.setTeamLoginId(body.loginId);
+        team.setPassword(hashedPassword);
+
         return repo.save(team);
+    }
+
+    // Login
+    public Map<String, String> Login(LoginBody body) {
+        Optional<Team> team = repo.getTeamByLoginId(body.loginId);
+
+        if (team.isEmpty()) {
+            throw new RuntimeException("Team not found");
+        }
+
+        if (!BCrypt.checkpw(body.password, team.get().getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+        Map<String, String> response = generateJWT(team.get());
+
+        return response;
     }
 
     // Read
@@ -94,4 +122,25 @@ public class TeamService {
         repo.delete(team);
     }
 
+    private Map<String, String> generateJWT(Team team) {
+
+        long timestamp = System.currentTimeMillis();
+
+        String token = Jwts.builder().signWith(SignatureAlgorithm.HS512, Constants.API_SECRET_KEY)
+        .setIssuedAt(new Date(timestamp))
+        .setExpiration(new Date (timestamp + Constants.TOKEN_VALIDITY_SECONDS))
+        .claim("id", team.getId())
+        .claim("name", team.getName())
+        .claim("loginId", team.getTeamLoginId())
+        .compact();
+
+        Map<String, String> response = new HashMap<>();
+        response.put(token, token);
+
+        return response;
+
+    }   
+
 }
+
+

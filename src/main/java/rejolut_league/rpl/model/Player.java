@@ -59,7 +59,10 @@ public class Player {
     @JsonIdentityReference(alwaysAsId = true)
     private Category category;
 
-    @OneToOne(mappedBy = "player")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "player")
+    @JoinColumn(name = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Auction auction;
 
 

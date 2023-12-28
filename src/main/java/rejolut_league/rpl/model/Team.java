@@ -37,7 +37,7 @@ public class Team {
 
     // private String team_image_url;
     
-    private String team_login_id;
+    private String teamLoginId;
     
     private String password;
 
@@ -45,20 +45,26 @@ public class Team {
     @Id
     @GeneratedValue
     private int id;
-    
+
     @Column
     private String name;
-    
-    @Column 
+
+    @Column
     private int totalMatches;
-    
+
     @Column
     private int matchesWon;
-    
-    @OneToMany(mappedBy="team")
-  private List<Player> players;
 
-  @OneToMany(mappedBy="team")
-  private List<Bid> bids;
+    @Column
+    private int matchesLost;
 
-}
+    @Column
+    private int matchesDrawn;
+
+    @OneToMany(mappedBy = "team")
+    private List<Player> players;
+
+    @OneToMany(mappedBy = "team")
+    private List<Bid> bids;
+
+  }

@@ -19,7 +19,7 @@ public class AuctionService {
     AuctionRepo repo;
 
     @Autowired
-    PlayerRepo userRepo;
+    PlayerRepo playerRepo;
 
     @Autowired
     BidRepo bidRepo;
@@ -28,8 +28,22 @@ public class AuctionService {
     TeamRepo teamRepo;
 
     // Create
-    public Auction createAuction(Auction auction) {
-        return repo.save(auction);
+    public Auction createAuction(startAuction body) {
+
+        Auction auction = new Auction();
+
+        Player playerData = playerRepo.findById(body.playerId)
+            .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        auction.setPlayer(playerData);
+        auction.setStatus("active");
+        auction.setBidAmount(playerData.getCategory().getBasePrice());
+
+        System.out.println("Before Saving the Auction ::: ");
+
+        Auction newAuction = repo.save(auction);
+
+        return newAuction;
     }
 
     // Read
@@ -62,9 +76,9 @@ public class AuctionService {
 
     
 
-    // public static class startAuction {
-    //     public Integer player_id;
-    // }
+    public static class startAuction {
+        public Integer playerId;
+    }
 
     // public static class bidBody {
     //     public Double bid_amount;
