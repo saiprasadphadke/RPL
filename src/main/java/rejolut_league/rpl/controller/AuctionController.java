@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -55,6 +58,12 @@ public class AuctionController {
         auctionService.deleteAuction(id);
     }
 
+    @PostMapping("/close")
+    public Auction closeAuction(@RequestBody AuctionService.CloseAuctionRequest entity) {
+        System.out.println("Close Auction Request Received");
+        return auctionService.closeAuction(entity);
+    }
+    
 }
 
 

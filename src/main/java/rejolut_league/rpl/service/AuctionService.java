@@ -69,97 +69,37 @@ public class AuctionService {
         repo.delete(auction);
     }
 
+    public Auction closeAuction(CloseAuctionRequest entity) {
+
+        Auction auction = repo.findById(entity.auctionId)
+                .orElseThrow(() -> new RuntimeException("Auction not found"));
+
+            auction.setStatus("closed");
+            // get the latest bid
+            Bid bid = auction.getBids().get(auction.getBids().size() - 1);
+            
+            Player player = auction.getPlayer();
+            player.setTeam(bid.getTeam());
+            playerRepo.save(player);
+            
+            Team team = bid.getTeam();
+            team.getPlayers().add(player);
+            teamRepo.save(team);
+
+            repo.save(auction);
+            
+        return auction;
+    }
+
     
 
     public static class startAuction {
         public Integer playerId;
     }
 
-    // public static class bidBody {
-    //     public Double bid_amount;
-    //     public Integer auction_id;
-    //     public Integer team_id;
-    // }
-
-    // public static class getAllAuctionsResponse {
-    //     public List<Auction> auctions;
-    // }
-
-    // public static class getAuctionsBody {
-    //     public Player player_id;
-    //     public Double bid_amount;
-    //     public String status;
-    //     public List<Bid> bids;
-    // }
-
-    // public Auction startAuction(startAuction body) {
-
-    //     Auction auction = new Auction();
-    //     Player playerData = userRepo.getUserById(body.player_id);
-    //     if (playerData != null) {
-    //         auction.setPlayer_id((Player) playerData);
-    //     } else {
-    //         throw new RuntimeException("Player not found");
-    //     }
-    //     auction.setStatus("active");
-    //     auction.setBid_amount(playerData.getCategory().getBase_price());
-    //     System.out.println("Before Saving the Auction ::: ");
-    //     System.out.println(auction);
-
-    //     Auction newAuction = repo.save(auction);
-
-    //     return newAuction;
-    // }
-
-    // public getAllAuctionsResponse getAllAuctions() {
-    //     List<Auction> auctions = repo.findAll();
-    //     getAllAuctionsResponse response = new getAllAuctionsResponse();
-
-    //     response.auctions = auctions;
-
-    //     return response;
-    // }
-
-    // public Auction placeBid(bidBody body) {
-
-    //     // Get auction by id
-    //     Auction auction = repo.findByAuctionId(body.auction_id);
-    //     if (auction == null) {
-    //         throw new RuntimeException("Auction not found");
-    //     }
-
-    //     // Get Team by id
-    //     Optional<Team> team = teamRepo.getTeamById(body.team_id);
-    //     if (team.isEmpty()) {
-    //         throw new RuntimeException("Team not found");
-    //     }
-
-    //     // // Save Bid
-    //     // Bid bid = new Bid();
-    //     // bid.setBidAmount(body.bid_amount);
-    //     // bid.setAuction_id(auction);
-    //     // bid.setTeam_id(team.get());
-    //     // Bid placedBid = bidRepo.save(bid);
-
-    //     // // Set the Bid in Auction
-    //     // auction.getBids().add(placedBid);
-    //     Auction response = repo.save(auction);
-    //     // Return the Auction
-    //     return response;
-    // }
-
-    // public Auction placeBid(Integer auctionId, Auction.Bid bid) {
-
-    // Auction auction = repo.findById(auctionId).orElseThrow(() -> new
-    // RuntimeException("Auction not found"));
-    // auction.getBids().add(bid);
-    // return repo.save(auction);
-    // }
-
-    // public Auction getAuction(Integer auctionId) {
-    // return repo.findById(auctionId).orElseThrow(() -> new
-    // RuntimeException("Auction not found"));
-    // }
+    public static class CloseAuctionRequest {
+        public Integer auctionId;
+    }
 
 }
 
