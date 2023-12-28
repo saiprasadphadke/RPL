@@ -44,6 +44,7 @@ public class Team {
     // private String team_symbol;
     @Id
     @GeneratedValue
+    @Column(name = "team_id")
     private int id;
 
     @Column

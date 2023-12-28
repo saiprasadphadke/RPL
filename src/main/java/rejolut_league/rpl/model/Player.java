@@ -42,6 +42,7 @@ public class Player {
 
     @Id
     @GeneratedValue
+    @Column(name = "player_id")
     private int id;
 
     @Column
@@ -50,7 +51,10 @@ public class Player {
     @Column
     private int age;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)

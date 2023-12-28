@@ -1,5 +1,9 @@
 package rejolut_league.rpl.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -9,28 +13,20 @@ import lombok.Data;
 @Table(name = "Bid", schema = "public")
 public class Bid {
 
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // private Integer bid_id;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "auction_id")
-    // private Auction auction;
-
-    // @ManyToOne
-    // @JoinColumn(name = "team_id")
-    // private Team team;
-
-    // @Column(name = "bid_amount")
-    // private Double bidAmount;
     @Id
     @GeneratedValue
+    @Column(name = "bid_id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Auction auction;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private Team team;
 
     @Column

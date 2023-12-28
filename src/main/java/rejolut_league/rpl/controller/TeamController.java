@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/team")
 public class TeamController {
     @Autowired
@@ -47,34 +46,13 @@ public class TeamController {
     // }
     // }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<Map<String, Object>> login(@RequestBody
-    // TeamService.LoginBody entity) {
-    // System.out.println(entity);
-    // Team team = teamService.login(entity);
-    // // new Map<String, Object>() {
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> Login(@RequestBody TeamService.LoginBody entity) {
+       
+        Map<String, String> team = teamService.Login(entity);
 
-    // // };
-    // return new ResponseEntity<>(Map.of("team", team), HttpStatus.OK);
-    // }
-
-    // @GetMapping("/all")
-    // public List<Team> getAllTeams() {
-
-    // List<Team> teams = (List<Team>) repo.findAll();
-
-    // return teams;
-
-    // }
-
-    // @GetMapping("/{id}")
-    // public Optional<Team> getTeam(@PathVariable Integer id) {
-
-    // Optional<Team> response = repo.findById(id);
-
-    // return response;
-
-    // }
+        return ResponseEntity.ok().body(team);
+    }
 
     // Create
     @PostMapping("")

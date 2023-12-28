@@ -1,6 +1,5 @@
 package rejolut_league.rpl.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import rejolut_league.rpl.model.*;
 import rejolut_league.rpl.repo.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -20,9 +18,6 @@ public class AuctionService {
 
     @Autowired
     PlayerRepo playerRepo;
-
-    @Autowired
-    BidRepo bidRepo;
 
     @Autowired
     TeamRepo teamRepo;
