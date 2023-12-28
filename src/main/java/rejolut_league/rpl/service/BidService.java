@@ -28,11 +28,10 @@ public class BidService {
 
     public static class createBidRequest {
         public Integer auctionId;
-        public Integer teamId;
     }
 
     // Create
-    public Bid createBid(createBidRequest body) {
+    public Bid createBid(Integer teamId, createBidRequest body) {
 
         Bid bid = new Bid();
 
@@ -42,7 +41,7 @@ public class BidService {
         
         if (auctionData.getBids().size() > 0) {
             Bid lastestBid = (Bid) auctionData.getBids().get(auctionData.getBids().size() - 1);
-            if (lastestBid.getTeam().getId() == body.teamId) {
+            if (lastestBid.getTeam().getId() == teamId) {
                 throw new RuntimeException("Cannot bid on your own bid");
             }
             Double newBidAmount = auctionData.getBidAmount() + Constants.BID_STEP_SIZE;
@@ -53,7 +52,7 @@ public class BidService {
             bid.setAmount(auctionData.getBidAmount());
         }
 
-        Team teamData = teamRepo.findById(body.teamId)
+        Team teamData = teamRepo.findById(teamId)
                 .orElseThrow(() -> new RuntimeException("Team not found"));
         bid.setTeam(teamData);
 

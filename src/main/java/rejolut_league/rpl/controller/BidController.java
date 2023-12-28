@@ -2,6 +2,7 @@ package rejolut_league.rpl.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import rejolut_league.rpl.model.Bid;
 import rejolut_league.rpl.repo.BidRepo;
 import rejolut_league.rpl.service.BidService;
@@ -9,6 +10,7 @@ import rejolut_league.rpl.service.BidService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,10 +26,12 @@ public class BidController {
     @Autowired
     BidService bidService;
 
-    @PostMapping("")
-    public Bid placeBid(@RequestBody BidService.createBidRequest entity) {
-
-        Bid response = bidService.createBid(entity);
+    @PostMapping("/submit")
+    public Bid placeBid(HttpServletRequest httpRequest, @RequestBody BidService.createBidRequest entity) {
+        // fetch attribute set in httpRequest
+        Integer teamId = Integer.parseInt(httpRequest.getAttribute("teamId").toString());
+    
+        Bid response = bidService.createBid(teamId, entity);
         return response;
     }
 
