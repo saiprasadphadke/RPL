@@ -7,12 +7,13 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/player")
 public class PlayerController {
-
-    
 
     @Autowired
     private PlayerService playerService;
@@ -41,6 +42,15 @@ public class PlayerController {
     public void deleteUser(@PathVariable Integer id) {
         playerService.deleteUser(id);
     }
+
+    @PostMapping("/{id}/team")
+    public Player changePlayerTeam(@PathVariable Integer id, @RequestBody PlayerService.ChangeTeamRequest entity) {
+        Player response = playerService.changeTeam(id, entity);
+        return response;
+    }
+    
+
+
 
 }
 

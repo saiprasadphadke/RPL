@@ -9,43 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import rejolut_league.rpl.model.Category;
 import rejolut_league.rpl.model.Player;
+import rejolut_league.rpl.model.Team;
 import rejolut_league.rpl.repo.CategoryRepo;
 import rejolut_league.rpl.repo.PlayerRepo;
+import rejolut_league.rpl.repo.TeamRepo;
 
 import java.util.List;
-
-// public class PlayerService {
-
-//     @Autowired
-//     private PlayerRepo userRepo;
-
-//     @Autowired
-//     private CategoryRepo categoryRepo;
-
-//     public static class Register {
-//         public String user_name;
-//         public String email;
-//         public int age;
-//         public String user_image_url;
-//         public Integer category;
-//     }
-
-//     public Player createUser(Register addUserBody) {
-
-//         Player user = new Player();
-//         user.setName(addUserBody.user_name);
-//         user.setEmail(addUserBody.email);
-//         user.setAge(addUserBody.age);
-//         user.setUser_image_url(addUserBody.user_image_url);
-
-//         Object categoryData = categoryRepo.getCategoryById(addUserBody.category);
-
-//         user.setCategory((Category) categoryData);
-
-//         return userRepo.save(user);
-//     }
-
-// }
 
 @Service
 public class PlayerService {
@@ -85,11 +54,18 @@ public class PlayerService {
         }
     }
 
+    public static class ChangeTeamRequest {
+        public Integer teamId;
+    }
+
     @Autowired
-    private PlayerRepo userRepository;
+    private PlayerRepo playerRepo;
 
     @Autowired
     private CategoryRepo categoryRepository;
+
+    @Autowired
+    private TeamRepo teamRepo;
 
     public Player createUser(CreatePlayerRequest player) {
         Player newPlayer = new Player();
@@ -101,7 +77,7 @@ public class PlayerService {
                     throw new ResourceNotFoundException("Category not found with id: " + player.getCategory());
                 });
         newPlayer.setCategory(category);
-        Player response = userRepository.save(newPlayer);
+        Player response = playerRepo.save(newPlayer);
         // Add Player back to the list of players in Category
         category.getPlayers().add(response);
         categoryRepository.save(category);
@@ -109,18 +85,18 @@ public class PlayerService {
     }
 
     public Player getUserById(Integer id) {
-        return userRepository.findById(id)
+        return playerRepo.findById(id)
                 .orElseThrow(() -> {
                     throw new ResourceNotFoundException("Player not found with id:" + id);
                 });
     }
 
     public List<Player> getAllUsers() {
-        return userRepository.findAll();
+        return playerRepo.findAll();
     }
 
     public Player updateUser(Integer id, Player userDetails) {
-        Player player = userRepository.findById(id)
+        Player player = playerRepo.findById(id)
                 .orElseThrow(() -> {
                     throw new ResourceNotFoundException("Player not found with id: " + id);
                 });
@@ -128,16 +104,40 @@ public class PlayerService {
         // player.setEmail(userDetails.getEmail());
         player.setAge(userDetails.getAge());
 
-        return userRepository.save(player);
+        return playerRepo.save(player);
     }
 
     public void deleteUser(Integer id) {
-        Player player = userRepository.findById(id)
+        Player player = playerRepo.findById(id)
                 .orElseThrow(() -> {
                     throw new ResourceNotFoundException("Player not found with id: " + id);
                 });
-        userRepository.delete(player);
+        playerRepo.delete(player);
     }
+
+    public Player changeTeam(Integer id, ChangeTeamRequest entity) {
+        Player player = playerRepo.findById(id)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Player not found with id: " + id);
+                });
+        Team team = teamRepo.findById(entity.teamId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Team not found with id: " + entity.teamId);
+                });
+        // Remove player from old team
+        Team oldTeam = player.getTeam();
+        if (oldTeam != null) {
+            oldTeam.getPlayers().remove(player);
+            teamRepo.save(oldTeam);
+        }
+        // Add player to new team
+        player.setTeam(team);
+        team.getPlayers().add(player);
+        teamRepo.save(team);
+        return player;
+        
+    }
+
 
 }
 
