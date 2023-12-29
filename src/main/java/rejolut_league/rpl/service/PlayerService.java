@@ -2,7 +2,6 @@ package rejolut_league.rpl.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -74,7 +73,7 @@ public class PlayerService {
 
         Category category = (Category) categoryRepository.findById(player.getCategory())
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Category not found with id: " + player.getCategory());
+                    throw new RuntimeException("Category not found with id: " + player.getCategory());
                 });
         newPlayer.setCategory(category);
         Player response = playerRepo.save(newPlayer);
@@ -87,7 +86,7 @@ public class PlayerService {
     public Player getUserById(Integer id) {
         return playerRepo.findById(id)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Player not found with id:" + id);
+                    throw new RuntimeException("Player not found with id:" + id);
                 });
     }
 
@@ -98,7 +97,7 @@ public class PlayerService {
     public Player updateUser(Integer id, Player userDetails) {
         Player player = playerRepo.findById(id)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Player not found with id: " + id);
+                    throw new RuntimeException("Player not found with id: " + id);
                 });
 
         // player.setEmail(userDetails.getEmail());
@@ -110,7 +109,7 @@ public class PlayerService {
     public void deleteUser(Integer id) {
         Player player = playerRepo.findById(id)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Player not found with id: " + id);
+                    throw new RuntimeException("Player not found with id: " + id);
                 });
         playerRepo.delete(player);
     }
@@ -118,11 +117,11 @@ public class PlayerService {
     public Player changeTeam(Integer id, ChangeTeamRequest entity) {
         Player player = playerRepo.findById(id)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Player not found with id: " + id);
+                    throw new RuntimeException("Player not found with id: " + id);
                 });
         Team team = teamRepo.findById(entity.teamId)
                 .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Team not found with id: " + entity.teamId);
+                    throw new RuntimeException("Team not found with id: " + entity.teamId);
                 });
         // Remove player from old team
         Team oldTeam = player.getTeam();
@@ -135,9 +134,9 @@ public class PlayerService {
         team.getPlayers().add(player);
         teamRepo.save(team);
         return player;
-        
+
     }
 
-
 }
+
 

@@ -35,7 +35,6 @@ public class AuthFilter extends GenericFilterBean {
                 httpRequest.setAttribute("teamId", Integer.parseInt(claims.get("id").toString()));
             } 
             catch (Exception e) {
-                // TODO: handle exception
                 httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "Invalid/Expired Token");
                 return;
             }

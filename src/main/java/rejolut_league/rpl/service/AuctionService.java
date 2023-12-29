@@ -1,7 +1,6 @@
 package rejolut_league.rpl.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import rejolut_league.rpl.model.*;
@@ -28,7 +27,7 @@ public class AuctionService {
         Auction auction = new Auction();
 
         Player playerData = playerRepo.findById(body.playerId)
-            .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow(() -> new RuntimeException("Player not found"));
 
         auction.setPlayer(playerData);
         auction.setStatus("active");
@@ -44,7 +43,7 @@ public class AuctionService {
     // Read
     public Auction getAuctionById(Integer id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Auction not found with id:" + id));
+                .orElseThrow(() -> new RuntimeException("Auction not found with id:" + id));
     }
 
     public List<Auction> getAllAuctions() {
@@ -54,7 +53,7 @@ public class AuctionService {
     // Update
     public Auction updateAuction(Integer id, Auction auctionDetails) {
         Auction auction = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Auction not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
 
         auction.setBids(auctionDetails.getBids());
         // update other fields
@@ -65,7 +64,7 @@ public class AuctionService {
     // Delete
     public void deleteAuction(Integer id) {
         Auction auction = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Auction not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
         repo.delete(auction);
     }
 
@@ -74,24 +73,22 @@ public class AuctionService {
         Auction auction = repo.findById(entity.auctionId)
                 .orElseThrow(() -> new RuntimeException("Auction not found"));
 
-            auction.setStatus("closed");
-            // get the latest bid
-            Bid bid = auction.getBids().get(auction.getBids().size() - 1);
-            
-            Player player = auction.getPlayer();
-            player.setTeam(bid.getTeam());
-            playerRepo.save(player);
-            
-            Team team = bid.getTeam();
-            team.getPlayers().add(player);
-            teamRepo.save(team);
+        auction.setStatus("closed");
+        // get the latest bid
+        Bid bid = auction.getBids().get(auction.getBids().size() - 1);
 
-            repo.save(auction);
-            
+        Player player = auction.getPlayer();
+        player.setTeam(bid.getTeam());
+        playerRepo.save(player);
+
+        Team team = bid.getTeam();
+        team.getPlayers().add(player);
+        teamRepo.save(team);
+
+        repo.save(auction);
+
         return auction;
     }
-
-    
 
     public static class startAuction {
         public Integer playerId;
@@ -102,5 +99,6 @@ public class AuctionService {
     }
 
 }
+
 
 
