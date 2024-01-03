@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("/player")
 public class PlayerController {
 
@@ -20,6 +21,7 @@ public class PlayerController {
 
     @PostMapping("")
     public Player createUser(@RequestBody PlayerService.CreatePlayerRequest player) {
+        System.out.println(player);
         return playerService.createUser(player);
     }
 

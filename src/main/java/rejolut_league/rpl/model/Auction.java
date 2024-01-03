@@ -34,5 +34,6 @@ public class Auction {
     private String status;
 
     private Double bidAmount;
+
     
 }

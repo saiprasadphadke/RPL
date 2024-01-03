@@ -12,4 +12,7 @@ public interface AuctionRepo extends JpaRepository<Auction, Integer> {
     @Query(value = "SELECT * FROM public.auction WHERE auction_id = ?1", nativeQuery = true)
     Auction findByAuctionId(Integer auctionId);
 
+    @Query(value = "SELECT * FROM public.auction WHERE status = ?1", nativeQuery = true)
+    List<Auction> findAuctionByStatus(String status);
+
 }

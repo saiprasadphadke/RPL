@@ -25,8 +25,11 @@ public class PlayerService {
         @JsonProperty("age")
         private int age;
 
-        @JsonProperty("category")
-        private int category;
+        @JsonProperty("categoryName")
+        private String categoryName;
+
+        @JsonProperty("basePrice")
+        private Double basePrice;
 
         public String getName() {
             return name;
@@ -44,12 +47,20 @@ public class PlayerService {
             this.age = age;
         }
 
-        public int getCategory() {
-            return category;
+        public String getCategoryName() {
+            return categoryName;
         }
 
-        public void setCategory(int category) {
-            this.category = category;
+        public void setCategory(String categoryName) {
+            this.categoryName = categoryName;
+        }
+
+        public Double getBasePrice() {
+            return basePrice;
+        }
+
+        public void setBasePrice(Double basePrice) {
+            this.basePrice = basePrice;
         }
     }
 
@@ -71,10 +82,9 @@ public class PlayerService {
         newPlayer.setName(player.getName());
         newPlayer.setAge(player.getAge());
 
-        Category category = (Category) categoryRepository.findById(player.getCategory())
-                .orElseThrow(() -> {
-                    throw new RuntimeException("Category not found with id: " + player.getCategory());
-                });
+        Category category = (Category) categoryRepository.getByNameAndBasePrice(player.getCategoryName(), player.getBasePrice());
+        // System.out.println(category);
+        // System.out.println(category.getBasePrice());
         newPlayer.setCategory(category);
         Player response = playerRepo.save(newPlayer);
         // Add Player back to the list of players in Category

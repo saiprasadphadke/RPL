@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RequestMapping("/category")
 public class CategoryController {
-
-    @Autowired
-	CategoryRepo catRepo;
 
     @Autowired
     CategoryService categoryService;
@@ -61,6 +59,12 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Integer id) {
         categoryService.deleteCategory(id);
+    }
+
+
+    @GetMapping("/{name}/baseprice")
+    public List<Category> getBasePrices(@PathVariable String name) {
+        return categoryService.getBasePrices(name);
     }
 
 }

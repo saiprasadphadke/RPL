@@ -1,11 +1,14 @@
 package rejolut_league.rpl.service;
 
+import org.hibernate.annotations.Array;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import rejolut_league.rpl.model.*;
 import rejolut_league.rpl.repo.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -96,6 +99,117 @@ public class AuctionService {
 
     public static class CloseAuctionRequest {
         public Integer auctionId;
+    }
+
+    public static class AuctionResponseObject {
+        public Integer id;
+        public String status;
+        public Double bidAmount;
+        public Integer playerId;
+        public String playerName;
+        public Integer teamId;
+        public String teamName;
+        public String playerStatus;
+        
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public void setBidAmount(Double bidAmount) {
+            this.bidAmount = bidAmount;
+        }
+
+        public void setPlayerId(int playerId) {
+            this.playerId = playerId;
+        }
+
+        public void setPlayerName(String playerName) {
+            this.playerName = playerName;
+        }
+
+        public void setTeamId(int teamId) {
+            this.teamId = teamId;
+        }
+
+        public void setTeamName(String teamName) {
+            this.teamName = teamName;
+        }
+
+        public void setPlayerStatus(String playerStatus) {
+            this.playerStatus = playerStatus;
+        }
+    }
+
+    public ResponseEntity<Object> findAuctionByStatus(String status) {
+        List<Auction> auctionList = repo.findAuctionByStatus(status);
+        if (auctionList.isEmpty()) {
+            return ResponseEntity.badRequest().body("No Auctions found with status: " + status);
+        } 
+        if (status.equals("active")) {
+            List<Object> customAuctionList = new ArrayList<>();
+            for (int i = 0; i < auctionList.size(); i++) {
+                Auction auction = auctionList.get(i);
+                List<Bid> bidList = auction.getBids();
+                AuctionResponseObject customAuction = new AuctionResponseObject();
+                if (bidList.isEmpty()) {
+                    // Create custom object with desired fields
+                    customAuction.setBidAmount(auction.getBidAmount());
+                    customAuction.setPlayerStatus("No Bids Yet");
+                }
+                else {
+                    Bid bid = bidList.get(bidList.size() - 1);
+                    customAuction.setBidAmount(bid.getAmount());
+                    customAuction.setTeamId(bid.getTeam().getId());
+                    customAuction.setTeamName(bid.getTeam().getName());
+                    customAuction.setPlayerStatus("Ongoing");
+                    
+                }
+                customAuction.setId(auction.getId());
+                customAuction.setStatus(auction.getStatus());
+                customAuction.setPlayerId(auction.getPlayer().getId());
+                customAuction.setPlayerName(auction.getPlayer().getName());
+                customAuctionList.add(customAuction);
+
+            }
+            
+            return ResponseEntity.ok().body(customAuctionList);
+        }
+        else if (status.equals("closed")){
+            List<Object> customAuctionList = new ArrayList<>();
+            for (int i = 0; i < auctionList.size(); i++) {
+                Auction auction = auctionList.get(i);
+                List<Bid> bidList = auction.getBids();
+                AuctionResponseObject customAuction = new AuctionResponseObject();
+                if (bidList.isEmpty()) {
+                    // Create custom object with desired fields
+                    customAuction.setBidAmount(auction.getBidAmount());
+                    customAuction.setPlayerStatus("Unsold");
+                }
+                else {
+                    Bid bid = bidList.get(bidList.size() - 1);
+                    customAuction.setBidAmount(bid.getAmount());
+                    customAuction.setTeamId(bid.getTeam().getId());
+                    customAuction.setTeamName(bid.getTeam().getName());
+                    customAuction.setPlayerStatus("Sold");
+                    
+                }
+                customAuction.setId(auction.getId());
+                customAuction.setStatus(auction.getStatus());
+                customAuction.setPlayerId(auction.getPlayer().getId());
+                customAuction.setPlayerName(auction.getPlayer().getName());
+                customAuctionList.add(customAuction);
+
+            }
+            
+            return ResponseEntity.ok().body(customAuctionList);
+        }
+        else {
+            return ResponseEntity.badRequest().body("Invalid status: " + status);
+        }
     }
 
 }

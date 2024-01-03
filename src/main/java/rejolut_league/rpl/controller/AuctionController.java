@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,6 +36,10 @@ public class AuctionController {
         return auctionService.createAuction(auction);
     }
 
+    @GetMapping("/status")
+   public ResponseEntity<Object> getAuctionByStatus(@RequestParam String status) {
+       return auctionService.findAuctionByStatus(status);
+   }
     // Read
     @GetMapping("/{id}")
     public Auction getAuctionById(@PathVariable Integer id) {
@@ -45,6 +50,7 @@ public class AuctionController {
     public List<Auction> getAllAuctions() {
         return auctionService.getAllAuctions();
     }
+
 
     // Update
     @PutMapping("/{id}")

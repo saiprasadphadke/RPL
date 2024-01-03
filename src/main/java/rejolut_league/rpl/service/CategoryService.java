@@ -48,4 +48,9 @@ public class CategoryService {
         categoryRepo.delete(category);
     }
 
+    public List<Category> getBasePrices(String keyword) {
+        List<Category> reponse = categoryRepo.getBasePriceByName(keyword);
+        return reponse;
+    }
+
 }
