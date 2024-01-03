@@ -1,6 +1,5 @@
 package rejolut_league.rpl.service;
 
-import org.hibernate.annotations.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -147,7 +146,7 @@ public class AuctionService {
     public ResponseEntity<Object> findAuctionByStatus(String status) {
         List<Auction> auctionList = repo.findAuctionByStatus(status);
         if (auctionList.isEmpty()) {
-            return ResponseEntity.badRequest().body("No Auctions found with status: " + status);
+            return ResponseEntity.ok().body(new ArrayList<>());
         } 
         if (status.equals("active")) {
             List<Object> customAuctionList = new ArrayList<>();
