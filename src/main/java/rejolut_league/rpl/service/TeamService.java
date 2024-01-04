@@ -42,6 +42,7 @@ public class TeamService {
         team.setTotalMatches(0);
         team.setTeamLoginId(body.loginId);
         team.setPassword(hashedPassword);
+        team.setBalance(250000000.0);
 
         return repo.save(team);
     }

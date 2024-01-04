@@ -84,6 +84,8 @@ public class AuctionService {
         playerRepo.save(player);
 
         Team team = bid.getTeam();
+        Double balance = team.getBalance();
+        team.setBalance(balance - bid.getAmount());
         team.getPlayers().add(player);
         teamRepo.save(team);
 

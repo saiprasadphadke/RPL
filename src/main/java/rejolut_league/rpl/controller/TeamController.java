@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/team")
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
+@CrossOrigin(origins = "http://192.168.29.35:3000", allowedHeaders = "*")
 public class TeamController {
     @Autowired
     TeamRepo repo;

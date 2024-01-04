@@ -15,6 +15,8 @@ public class Team {
     
     private String password;
 
+    private Double balance;
+
     // private String team_symbol;
     @Id
     @GeneratedValue
