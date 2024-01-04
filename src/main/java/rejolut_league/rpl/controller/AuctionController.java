@@ -1,7 +1,5 @@
 package rejolut_league.rpl.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import rejolut_league.rpl.model.Auction;
 import rejolut_league.rpl.repo.AuctionRepo;
 import rejolut_league.rpl.service.AuctionService;
@@ -12,8 +10,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -22,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @ResponseBody
 @RequestMapping("/auction")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class AuctionController {
 
     @Autowired

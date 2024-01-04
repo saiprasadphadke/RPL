@@ -9,9 +9,17 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // registry.addMapping("/*")
+        //         .allowedOrigins("http://localhost:3000", "https://f6ad-2405-201-1f-1c98-73-4307-95bf-2ffd.ngrok-free.app") // Add your frontend URL here
+        //         .allowedMethods("GET", "POST", "PUT", "DELETE")
+        //         .allowedHeaders("*")
+        //         .allowedOriginPatterns("*");
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://d484-103-190-212-216.ngrok-free.app") // Add your frontend URL here
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+        .allowedOrigins("http://localhost:3000", "https://f6ad-2405-201-1f-1c98-73-4307-95bf-2ffd.ngrok-free.app")
+        .allowedMethods("GET", "POST", "PUT", "DELETE")
+        .allowedHeaders("*")
+        .allowedOriginPatterns("*")
+        .allowCredentials(true)
+        .maxAge(3600);
     }
 }

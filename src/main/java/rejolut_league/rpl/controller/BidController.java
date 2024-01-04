@@ -1,7 +1,5 @@
 package rejolut_league.rpl.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.servlet.http.HttpServletRequest;
 import rejolut_league.rpl.model.Bid;
 import rejolut_league.rpl.repo.BidRepo;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin(origins = "https://f6ad-2405-201-1f-1c98-73-4307-95bf-2ffd.ngrok-free.app", allowedHeaders = "*")
 @RequestMapping("/bid")
 public class BidController {
 
