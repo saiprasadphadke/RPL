@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import rejolut_league.rpl.model.Category;
 import rejolut_league.rpl.repo.CategoryRepo;
 import rejolut_league.rpl.service.CategoryService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequestMapping("/category")
 public class CategoryController {
 
