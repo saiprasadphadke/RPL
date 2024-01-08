@@ -87,8 +87,6 @@ public class PlayerService {
         newPlayer.setAge(player.getAge());
 
         Category category = (Category) categoryRepository.getByNameAndBasePrice(player.getCategoryName(), player.getBasePrice());
-        // System.out.println(category);
-        // System.out.println(category.getBasePrice());
         newPlayer.setCategory(category);
         Player response = playerRepo.save(newPlayer);
         // Add Player back to the list of players in Category

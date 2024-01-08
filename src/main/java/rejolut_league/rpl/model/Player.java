@@ -1,45 +1,18 @@
 package rejolut_league.rpl.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Player", schema = "public")
+@Table(name = "Player", schema = "public", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "age", "category_id"})
+})
 public class Player {
-
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Column(name = "player_id")
-    // private int id;
-
-    // private String user_name;
-
-    // private String email;
-
-    // private int age;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "category_id")
-    // private Category category;
-
-    // @ManyToOne
-    // @JoinColumn(name = "team_id")
-    // private Team team;
-
-    // @OneToOne(mappedBy = "player_id")
-    // @JoinColumn(name = "auction_id")
-    // private Auction auction;
-
-    // private String user_image_url;
-
     @Id
     @GeneratedValue
     @Column(name = "player_id")
@@ -68,6 +41,4 @@ public class Player {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private Auction auction;
-
-
 }

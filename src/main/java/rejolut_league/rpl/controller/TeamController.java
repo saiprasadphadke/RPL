@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -59,7 +63,12 @@ public class TeamController {
         teamService.deleteTeam(id);
     }
 
-    // @GetMapping("/balances")
+    @GetMapping("/balances")
+    public List<Map<String, Object>> getBalances() {
+        List<Map<String, Object>> response = teamService.getBalances();
+        return response;
+    }
+    
 
 }
 

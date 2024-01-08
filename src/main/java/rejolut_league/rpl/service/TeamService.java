@@ -2,6 +2,7 @@ package rejolut_league.rpl.service;
 
 import java.util.*;
 
+import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -42,7 +43,7 @@ public class TeamService {
         team.setTotalMatches(0);
         team.setTeamLoginId(body.loginId);
         team.setPassword(hashedPassword);
-        team.setBalance(250000000.0);
+        team.setBalance(Constants.PURSE_BALANCE);
 
         return repo.save(team);
     }
@@ -109,6 +110,22 @@ public class TeamService {
         return response;
 
     }   
+
+
+    // Get balances
+    public List<Map<String, Object>> getBalances() {
+        List<Team> teams = repo.findAll();
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Team team : teams) {
+            Map<String, Object> balanceMap = new HashMap<>();
+            balanceMap.put("teamId", team.getId());
+            balanceMap.put("teamName", team.getName());
+            balanceMap.put("balance", team.getBalance());
+            response.add(balanceMap);
+        }
+        return response;
+    }
+
 
 }
 
