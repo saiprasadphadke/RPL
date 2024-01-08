@@ -6,39 +6,21 @@ import rejolut_league.rpl.service.TeamService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/team")
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 public class TeamController {
     @Autowired
     TeamRepo repo;
 
     @Autowired
     TeamService teamService;
-
-    // @PostMapping("/")
-    // public ResponseEntity<Object> registerTeam(@RequestBody
-    // TeamService.TeamRegister entity) {
-    // try {
-    // System.out.println("Starting Now");
-    // Team response = teamService.teamRegister(entity);
-    // System.out.println(response);
-    // return ResponseEntity.ok().body(response);
-    // }
-    // catch (Exception e) {
-    // return ResponseEntity.badRequest().body("Error creating user: " +
-    // e.getMessage());
-    // }
-    // }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> Login(@RequestBody TeamService.LoginBody entity) {

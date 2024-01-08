@@ -3,14 +3,15 @@ package rejolut_league.rpl.controller;
 import rejolut_league.rpl.model.Player;
 import rejolut_league.rpl.service.PlayerService;
 
-import java.util.List;
+import java.util.*;
+
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequestMapping("/player")
 public class PlayerController {
 
@@ -18,9 +19,10 @@ public class PlayerController {
     private PlayerService playerService;
 
     @PostMapping("")
-    public Player createUser(@RequestBody PlayerService.CreatePlayerRequest player) {
+    public ResponseEntity<Map<String, String>>  createUser(@RequestBody PlayerService.CreatePlayerRequest player) {
         System.out.println(player);
-        return playerService.createUser(player);
+        Map<String, String> reponse = playerService.createUser(player);
+        return ResponseEntity.ok().body(reponse);
     }
 
     @GetMapping("/{id}")

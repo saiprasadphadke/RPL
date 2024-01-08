@@ -12,22 +12,11 @@ import rejolut_league.rpl.service.CategoryService;
 
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*")
 @RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
-
-    // @PostMapping("/category")
-    // public Category addCategory(@RequestBody Category category) {
-    //     return catRepo.save(category);
-    // }
-
-    // @GetMapping("/category")
-    // public List<Category> getCategories() {
-    //     return (List<Category>) catRepo.findAll();
-    // }
 
     // Create
     @PostMapping("")

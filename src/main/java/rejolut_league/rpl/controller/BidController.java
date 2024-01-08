@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*",  allowCredentials = "true")
 @RequestMapping("/bid")
 public class BidController {
 

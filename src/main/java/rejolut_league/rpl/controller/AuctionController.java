@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @ResponseBody
 @RequestMapping("/auction")
-@CrossOrigin(originPatterns = "*", allowedHeaders = "*", allowCredentials = "true")
 public class AuctionController {
 
     @Autowired

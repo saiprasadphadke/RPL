@@ -2,10 +2,14 @@ package rejolut_league.rpl.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import rejolut_league.rpl.Constants;
 import rejolut_league.rpl.model.Category;
 import rejolut_league.rpl.model.Player;
 import rejolut_league.rpl.model.Team;
@@ -13,7 +17,7 @@ import rejolut_league.rpl.repo.CategoryRepo;
 import rejolut_league.rpl.repo.PlayerRepo;
 import rejolut_league.rpl.repo.TeamRepo;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PlayerService {
@@ -77,7 +81,7 @@ public class PlayerService {
     @Autowired
     private TeamRepo teamRepo;
 
-    public Player createUser(CreatePlayerRequest player) {
+    public Map<String, String>  createUser(CreatePlayerRequest player) {
         Player newPlayer = new Player();
         newPlayer.setName(player.getName());
         newPlayer.setAge(player.getAge());
@@ -90,7 +94,9 @@ public class PlayerService {
         // Add Player back to the list of players in Category
         category.getPlayers().add(response);
         categoryRepository.save(category);
-        return response;
+        Map<String, String> token = generateJWT(response);
+        
+        return token;
     }
 
     public Player getUserById(Integer id) {
@@ -146,6 +152,27 @@ public class PlayerService {
         return player;
 
     }
+
+     private Map<String, String> generateJWT(Player player) {
+
+        System.out.println("Generating JWT");
+        
+        long timestamp = System.currentTimeMillis();
+
+        String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
+        .setIssuedAt(new Date(timestamp))
+        .setExpiration(new Date (timestamp + Constants.TOKEN_VALIDITY_SECONDS*365))
+        .claim("id", player.getId())
+        .claim("name", player.getName())
+        .claim("age", player.getAge())
+        .compact();
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+
+        return response;
+
+    }   
 
 }
 
