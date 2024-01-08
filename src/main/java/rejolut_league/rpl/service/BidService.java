@@ -1,7 +1,12 @@
 package rejolut_league.rpl.service;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.aspectj.weaver.ast.HasAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -33,35 +38,57 @@ public class BidService {
     // Create
     public Bid createBid(Integer teamId, createBidRequest body) {
 
-        Bid bid = new Bid();
+        // try {
+            Bid bid = new Bid();
 
-        Auction auctionData = auctionRepo.findById(body.auctionId)
-                .orElseThrow(() -> new RuntimeException("Auction not found"));
-        bid.setAuction(auctionData);
-        
-        if (auctionData.getBids().size() > 0) {
-            Bid lastestBid = (Bid) auctionData.getBids().get(auctionData.getBids().size() - 1);
-            if (lastestBid.getTeam().getId() == teamId) {
-                throw new RuntimeException("Cannot bid on your own bid");
+            Auction auctionData = auctionRepo.findById(body.auctionId)
+                    .orElseThrow(() -> new RuntimeException("Auction not found"));
+            bid.setAuction(auctionData);
+
+            if (auctionData.getBids().size() > 0) {
+                Bid lastestBid = (Bid) auctionData.getBids().get(auctionData.getBids().size() - 1);
+                if (lastestBid.getTeam().getId() == teamId) {
+                    throw new RuntimeException("Cannot bid on your own bid");
+                }
+                Integer bidSize = auctionData.getBids().size();
+                Double bidStepSize = Constants.BID_STEP_SIZE_0;
+                if (bidSize >= 40 ) {
+                    bidStepSize = Constants.BID_STEP_SIZE_40;
+                }
+                else  if (bidSize >= 25) {
+                    bidStepSize = Constants.BID_STEP_SIZE_25;
+                }
+                else if (bidSize >= 10) {
+                    bidStepSize = Constants.BID_STEP_SIZE_10;
+                }
+                Double newBidAmount = auctionData.getBidAmount() + bidStepSize;
+                bid.setAmount(newBidAmount);
+                auctionData.setBidAmount(newBidAmount);
             }
-            Double newBidAmount = auctionData.getBidAmount() + Constants.BID_STEP_SIZE;
-            bid.setAmount(newBidAmount);
-            auctionData.setBidAmount(newBidAmount);
-        }
-        else {
-            bid.setAmount(auctionData.getBidAmount());
-        }
+            else {
+                bid.setAmount(auctionData.getBidAmount());
+            }
 
-        Team teamData = teamRepo.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
-        bid.setTeam(teamData);
+            Team teamData = teamRepo.findById(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            bid.setTeam(teamData);
 
-        Bid response = bidRepo.save(bid);
+            Bid response = bidRepo.save(bid);
 
-        auctionData.getBids().add(response);
-        auctionRepo.save(auctionData);
+            auctionData.getBids().add(response);
+            auctionRepo.save(auctionData);
+            return response;
 
-        return response;
+            // Map<String, Object> result = new HashMap<String,Object>();
+            // result.put("bid", response);
+            // return result;
+
+        //     }
+        // catch (Exception e) {
+        //     HashMap<String, Object> errorMap = new HashMap<>();
+        //     errorMap.put("error", e);
+        //     return errorMap;
+        // }
     }
 
     // Read
