@@ -21,8 +21,8 @@ public class PlayerController {
     @PostMapping("")
     public ResponseEntity<Map<String, String>>  createUser(@RequestBody PlayerService.CreatePlayerRequest player) {
         System.out.println(player);
-        Map<String, String> reponse = playerService.createUser(player);
-        return ResponseEntity.ok().body(reponse);
+        Map<String, String> response = playerService.createUser(player);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/{id}")
