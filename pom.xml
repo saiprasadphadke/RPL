@@ -10,8 +10,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>rejolut_league</groupId>
-	<artifactId>rpl</artifactId>
 	<version>1</version>
+	<artifactId>rpl</artifactId>
 	<name>rpl</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -101,6 +101,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>rpl##${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
