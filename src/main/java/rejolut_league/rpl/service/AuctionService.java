@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import rejolut_league.rpl.model.*;
 import rejolut_league.rpl.repo.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -211,6 +210,36 @@ public class AuctionService {
         else {
             return ResponseEntity.badRequest().body("Invalid status: " + status);
         }
+    }
+
+    public List<Map<String, Object>> getMostExpensivePlayer() {
+
+        List<Map<String, Object>> mostExpensivePlayer = new ArrayList<>();
+        List<Auction> auctionList = repo.findAuctionByStatus("closed");
+        if (auctionList.isEmpty()) {
+            return mostExpensivePlayer;
+        }
+        for (int i = 0; i < auctionList.size(); i++) {
+            Auction auction = auctionList.get(i);
+            List<Bid> bidList = auction.getBids();
+            if (bidList.isEmpty()) {
+                continue;
+            }
+            Bid bid = bidList.get(bidList.size() - 1);
+            Map<String, Object> player = new HashMap<>();
+            player.put("playerName", auction.getPlayer().getName());
+            player.put("bidAmount", bid.getAmount());
+            player.put("teamName", bid.getTeam().getName());
+            mostExpensivePlayer.add(player);
+        }
+        Collections.sort(mostExpensivePlayer, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                return ((Double) o2.get("bidAmount")).compareTo((Double) o1.get("bidAmount"));
+            }
+        });
+        return mostExpensivePlayer;
+        
     }
 
 }

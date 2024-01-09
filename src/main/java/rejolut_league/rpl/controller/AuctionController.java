@@ -6,10 +6,13 @@ import rejolut_league.rpl.service.AuctionService;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -65,6 +68,12 @@ public class AuctionController {
         System.out.println("Close Auction Request Received");
         return auctionService.closeAuction(entity);
     }
+
+    @GetMapping("/mep")
+    public List<Map<String, Object>> getMostExpensivePlayer () {
+        return auctionService.getMostExpensivePlayer();
+    }
+    
     
 }
 
