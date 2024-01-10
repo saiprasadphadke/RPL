@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -72,6 +75,13 @@ public class AuctionController {
     @GetMapping("/mep")
     public List<Map<String, Object>> getMostExpensivePlayer () {
         return auctionService.getMostExpensivePlayer();
+    }
+    
+    @PostMapping("/unsold")
+    public Auction handleUnsoldPlayerAuction(@RequestBody Integer auctionId) {
+        //TODO: process POST request
+        Auction response = auctionService.handleUnsoldPlayerAuction(auctionId);
+        return response;
     }
     
     
