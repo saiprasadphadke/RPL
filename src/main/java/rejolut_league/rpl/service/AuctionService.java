@@ -242,13 +242,13 @@ public class AuctionService {
         
     }
 
-    public Auction handleUnsoldPlayerAuction(Integer auctionId) {
-        Auction auction = repo.findById(auctionId)
-                .orElseThrow(() -> new RuntimeException(String.valueOf(auctionId)));
+    public Auction handleUnsoldPlayerAuction(CloseAuctionRequest entity) {
+        Auction auction = repo.findById(entity.auctionId)
+                .orElseThrow(() -> new RuntimeException(String.valueOf(entity.auctionId)));
         if (auction.getStatus().equals("closed")) {
             return auction;
         }
-        auction.setStatus("closed");
+        auction.setStatus("unsold");
         repo.save(auction);
         return auction;
     }

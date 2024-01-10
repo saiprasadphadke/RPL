@@ -10,16 +10,6 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
-
-
-
 
 @RestController
 @ResponseBody
@@ -78,9 +68,8 @@ public class AuctionController {
     }
     
     @PostMapping("/unsold")
-    public Auction handleUnsoldPlayerAuction(@RequestBody Integer auctionId) {
-        //TODO: process POST request
-        Auction response = auctionService.handleUnsoldPlayerAuction(auctionId);
+    public Auction handleUnsoldPlayerAuction(@RequestBody AuctionService.CloseAuctionRequest entity) {
+        Auction response = auctionService.handleUnsoldPlayerAuction(entity);
         return response;
     }
     
