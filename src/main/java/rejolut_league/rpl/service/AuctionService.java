@@ -2,6 +2,7 @@ package rejolut_league.rpl.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+// import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import rejolut_league.rpl.model.*;
@@ -21,6 +22,9 @@ public class AuctionService {
 
     @Autowired
     TeamRepo teamRepo;
+
+    // @Autowired
+    // private SimpMessagingTemplate template;
 
     // Create
     public Auction createAuction(startAuction body) {
@@ -250,6 +254,7 @@ public class AuctionService {
         }
         auction.setStatus("unsold");
         repo.save(auction);
+        // this.template.convertAndSend("/topic/auctionUpdate", auction);
         return auction;
     }
 

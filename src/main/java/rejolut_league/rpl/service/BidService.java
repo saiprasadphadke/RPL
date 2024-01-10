@@ -1,16 +1,11 @@
 package rejolut_league.rpl.service;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.aspectj.weaver.ast.HasAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-
+// import org.springframework.messaging.simp.SimpMessagingTemplate;
 import rejolut_league.rpl.Constants;
 import rejolut_league.rpl.model.Auction;
 import rejolut_league.rpl.model.Bid;
@@ -30,6 +25,9 @@ public class BidService {
 
     @Autowired
     TeamRepo teamRepo;
+
+    // @Autowired
+    // private SimpMessagingTemplate template;
 
     public static class createBidRequest {
         public Integer auctionId;
@@ -77,6 +75,7 @@ public class BidService {
 
             auctionData.getBids().add(response);
             auctionRepo.save(auctionData);
+            // this.template.convertAndSend("/topic/auctionUpdate", response);
             return response;
 
             // Map<String, Object> result = new HashMap<String,Object>();
